@@ -1,20 +1,31 @@
 package ru.xerces.springapp_1.entity;
 
+import jakarta.persistence.*;
+
+
+@Entity
+@Table(name = "users")
 public class User {
-    private static int globalId = 0;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(unique = true)
     private String nickname;
+
+    @Column(unique = true)
     private String email;
+
+    @Column
     private String country;
 
-    public User() {}
+    public User() {
+    }
 
     public User(String nickname, String email, String country) {
-        globalId++;
         this.nickname = nickname;
         this.email = email;
         this.country = country;
-        this.id = globalId;
     }
 
     public int getId() {

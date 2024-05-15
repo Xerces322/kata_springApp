@@ -1,52 +1,43 @@
 package ru.xerces.springapp_1.dao;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import ru.xerces.springapp_1.entity.User;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class UserDaoService implements UserDao{
-    private static List<User> users;
-    static {
-        users = new ArrayList<>();
-        users.add(new User("xerces", "xerces@mail.ru", "Russia"));
-    }
+
+    @PersistenceContext
+    private EntityManager em;
 
     @Override
     public List<User> getAllUsers() {
-        return users;
+        return em.createQuery("SELECT u FROM User u", User.class).getResultList();
     }
 
     @Override
     public User getUserById(int id) {
-        for (User user : users) {
-            if (user.getId() == id) {
-                return user;
-            }
-        }
-        return null;
+        return em.find(User.class, id);
     }
 
     @Override
     public void addUser(User user) {
-        users.add(user);
+        em.persist(user);
     }
 
     @Override
     public void updateUser(int id, User user) {
-        for (User u : users) {
-            if (u.getId() == id) {
-                u.setNickname(user.getNickname());
-                u.setEmail(user.getEmail());
-                u.setCountry(user.getCountry());
-            }
-        }
+        User tempUser = em.find(User.class, id);
+        tempUser.setNickname(user.getNickname());
+        tempUser.setCountry(user.getCountry());
+        tempUser.setEmail(user.getEmail());
+        em.merge(tempUser);
     }
 
     @Override
     public void deleteUser(int id) {
-        users.removeIf(user -> user.getId() == id);
+        em.remove(em.find(User.class, id));
     }
 }

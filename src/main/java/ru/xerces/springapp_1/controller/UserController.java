@@ -59,23 +59,4 @@ public class UserController {
         return "redirect:/users";
     }
 
-
-
-//    @GetMapping("/{id}/edit")
-//    public String edit(@PathVariable("id") int id, Model model) {
-//        model.addAttribute("person", personDAO.show(id));
-//        return "people/edit";
-//    }
-//
-//    @PatchMapping("/{id}")
-//    public String update(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult, @PathVariable("id") int id) {
-//        if (bindingResult.hasErrors()) {
-//            return "people/edit";
-//        }
-//        personDAO.update(id, person);
-//        return "redirect:/people";
-//    }
-
-
-
 }
